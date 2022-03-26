@@ -5,6 +5,12 @@ namespace App\Services;
 
 interface GeocodingInterface
 {
-    public function getCityCoordinates(string $name) : string;
+    /**
+     * Resolves the coordinates of a given city
+     * @param string $cityName
+     *
+     * @return string
+     */
+    public function getCityCoordinates(string $cityName) : string;
 
 }

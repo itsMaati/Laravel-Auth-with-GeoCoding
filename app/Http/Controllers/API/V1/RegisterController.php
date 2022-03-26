@@ -31,18 +31,12 @@ class RegisterController extends Controller
      */
     public function store(RegisterRequest $request, UserService $userService, GeocodingInterface $geoService)
     {
-        $location_geocoded = $geoService->getCityCoordinates($request->validated()['city']);
+        $locationGeocoded = $geoService->getCityCoordinates($request->validated()['city']);
 
-        $user = User::create([
-            'first_name'=>$request->validated()['first_name'],
-            'last_name'=>$request->validated()['last_name'],
-            'email'=>$request->validated()['email'],
-            'password'=>Hash::make($request->validated()['password']),
-            'city_name'=>$request->validated()['city'],
-            'city_coordinates'=>$location_geocoded,
-        ]);
+        $user = $userService->registerUser($request->validated(),$locationGeocoded);
 
         $token = $userService->generateToken($user);
-        return response()->outputOk(['token'=>$token->plainTextToken]);
+
+        return response()->outputOk(['token'=>$token]);
     }
 }

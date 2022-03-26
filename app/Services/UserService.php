@@ -3,12 +3,20 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class UserService  {
 
     public function registerUser(array $input, string $location)
     {
+        if (RateLimiter::tooManyAttempts('register '.request()->ip(), $perMinute = 1)) {
+            throw new TooManyRequestsHttpException();
+        }
+
+        RateLimiter::hit('register '.request()->ip());
+
         return User::create([
             'first_name'=>$input['first_name'],
             'last_name'=>$input['last_name'],

@@ -7,9 +7,12 @@ use App\Exceptions\Geo\LocationNotFoundException;
 use Illuminate\Support\Facades\Http;
 
 class MapboxGeocodingService implements GeocodingInterface {
-    public function getCityCoordinates(string $name) : string
+    /**
+     * @inheritdoc
+     */
+    public function getCityCoordinates(string $cityName) : string
     {
-        $response = Http::get('https://api.mapbox.com/geocoding/v5/mapbox.places/'.urlencode($name).'.json', [
+        $response = Http::get('https://api.mapbox.com/geocoding/v5/mapbox.places/'.urlencode($cityName).'.json', [
             "country"=>"ir",
             "types"=>"region,locality,address,district,neighborhood",
             "access_token"=>env("MAPBOX_TOKEN"),
