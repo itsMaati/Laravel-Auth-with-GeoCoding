@@ -18,9 +18,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'city_name',
+        'city_coordinates',
     ];
 
     /**
@@ -41,4 +44,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /**
+     * Get the location for this user
+     *
+     */
+    public function location()
+    {
+        return $this->hasOne(UserLocation::class);
+    }
+
 }
