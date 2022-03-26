@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Geo\GeoServiceUnavailableException;
+use App\Exceptions\Geo\LocationNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +40,18 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+    public function render($request, Throwable $e)
+    {
+
+        if($e instanceof LocationNotFoundException){
+            return response()->outputError(trans("invalid_location"));
+        }
+        if($e instanceof GeoServiceUnavailableException){
+            return response()->outputError(trans("geo_connection_error"),500);
+        }
+
+        return parent::render($request, $e);
+
     }
 }
