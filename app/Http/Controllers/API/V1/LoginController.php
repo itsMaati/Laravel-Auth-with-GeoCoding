@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\LoginRequest;
+use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class LoginController extends Controller
             'password' => $request->validated()['password']
         ])) {
             $token = $userService->generateToken(Auth::user());
-            return response()->outputOk(['token'=>$token]);
+            return  (new UserResource(Auth::user()))->additional(['data'=>['token'=>$token]]);
         } else {
             return response()->outputError("Invalid username or password");
 

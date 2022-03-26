@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\GeocodingInterface;
 use App\Services\MapboxGeocodingService;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
