@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\GeocodingInterface;
+use App\Services\MapboxGeocodingService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(GeocodingInterface::class, function ($app) {
+            return new MapboxGeocodingService();
+        });
     }
 
     /**
@@ -23,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
     }
 }
